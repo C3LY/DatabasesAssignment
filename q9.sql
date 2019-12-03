@@ -15,4 +15,4 @@ FROM Hospital_Operation AS HO1
         ((addtime(TIME(HO2.startDateTime), HO2.duration)) >= (TIME(HO1.startDateTime)))
         -- (addtime(TIME(HO2.startDateTime), HO2.duration) >= HO1.startDateTime))
  GROUP BY HO1.theatreNo, HO1.startDateTime
-HAVING endtime1 <> endtime2;
+HAVING !((HO1.theatreNo = HO2.theatreNo) AND (HO1.startDateTime = HO2.startDateTime));
