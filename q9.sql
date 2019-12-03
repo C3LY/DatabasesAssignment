@@ -8,7 +8,7 @@
 
 SELECT HO1.theatreNo, HO1.startDateTime as starttime1, (addtime(TIME(HO1.startDateTime), HO1.duration)) as endtime1, HO2.startDateTime as starttime2, (addtime(TIME(HO2.startDateTime), HO2.duration)) as endtime2, if((Time('2016-12-02 09:00:00') < TIME('2016-12-02 11:00:00')), 5,6) as ifstate
 FROM Hospital_Operation AS HO1
-    INNER Join Hospital_Operation as HO2 on
+    Join Hospital_Operation as HO2 on
         (HO1.theatreNo = HO2.theatreNo) AND
         (DATE(HO1.startDateTime) = DATE(HO2.startDateTime)) AND
         ((TIME(HO2.startDateTime)) < (addtime(TIME(HO1.startDateTime), HO1.duration))) AND
