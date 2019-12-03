@@ -6,7 +6,7 @@
 -- ((TIME(HO2.startDateTime)) <= (ADDTIME(TIME(HO1.startDateTime),HO1.duration)))
 
 
-SELECT HO1.theatreNo, HO1.startDateTime as starttime1, (addtime(TIME(HO1.startDateTime), HO1.duration)) as endtime1, HO2.startDateTime as starttime2, (addtime(TIME(HO2.startDateTime), HO2.duration)) as endtime2
+SELECT HO1.theatreNo, time(HO1.startDateTime) as Time1,  time(HO2.startDateTime) as Time2
 FROM Hospital_Operation AS HO1
     inner JOIN Hospital_Operation as HO2 on
         (HO1.theatreNo = HO2.theatreNo)
