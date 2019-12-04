@@ -1,16 +1,25 @@
-select t2.theatreNo,
-       day(t2.date1)       AS day,
-       monthname(t2.date1) AS month,
-       year(t2.date1)      AS year,
-       t2.totalops as numOps
-from (
-select theatreNo, max(totalops) as totalops from (
-select theatreNo, date(startDateTime), count(*) as totalops
-  from Hospital_Operation t
-  group by theatreNo, date(startDateTime)
-) s1 group by theatreNo) w join
-(select theatreNo, date(startDateTime) as date1, count(*) as totalops
-  from Hospital_Operation t
-  group by theatreNo, date(startDateTime)
-) t2 on t2.theatreNo = w.theatreNo and t2.totalops = w.totalops
-ORDER BY theatreNo asc, date1 asc;
+SELECT HO2.theatreNo,
+       day(HO2.date1)       AS dom,
+       monthname(HO2.date1) AS month,
+       year(HO2.date1)      AS year,
+       HO2.totalops         AS numOps
+FROM (
+         SELECT theatreNo,
+                max(totalops) AS maxops -- highest num of ops for each theatreno
+         FROM (
+                  SELECT theatreNo,
+                         date(startDateTime),
+                         count(*) AS totalops -- counts total ops for each day
+                  FROM Hospital_Operation AS HO1
+                  GROUP BY theatreNo, date(startDateTime)
+              ) AS totalforDaysT
+         GROUP BY theatreNo) AS maxOpT
+    JOIN
+     (SELECT theatreNo,
+             date(startDateTime) AS date1,
+             count(*)            AS totalops -- counts total ops for each day
+      FROM Hospital_Operation AS HO1
+      GROUP BY theatreNo, date(startDateTime)
+     ) AS HO2
+     ON HO2.theatreNo = maxOpT.theatreNo AND HO2.totalops = maxOpT.maxops
+ORDER BY theatreNo ASC, date1 ASC;
